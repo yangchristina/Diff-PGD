@@ -26,7 +26,7 @@ from utils import *
 
 
 def get_imagenet_dm_conf(class_cond=False, respace="", device='cuda',
-                         model_path='/ssdscratch/hxue45/data/Diff-Smoothing/ckpt/dm/256x256_diffusion_uncond.pt'):
+                         model_path='../data/ckpt/256x256_diffusion_uncond.pt'):
 
     defaults = dict(
         clip_denoised=True,
@@ -54,27 +54,22 @@ def get_imagenet_dm_conf(class_cond=False, respace="", device='cuda',
     defaults.update(model_and_diffusion_defaults())
     defaults.update(model_config)
     args = Namespace(**defaults)
-    
+
 
     model, diffusion = create_model_and_diffusion(
     **args_to_dict(args, model_and_diffusion_defaults().keys())
     )
-    
+
     cprint('Create DM         ---------------', 'y')
-    
-    
+
+
     # load ckpt
-    
+
     ckpt = th.load(model_path)
     model.load_state_dict(ckpt)
     model = model.to(device)
-    
-    
+
+
     cprint('Load DM Ckpt      ---------------', 'y')
-    
+
     return model, diffusion
-
-
-
-
-
